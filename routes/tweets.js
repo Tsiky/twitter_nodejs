@@ -1,28 +1,31 @@
 var express = require('express');
 var router = express.Router();
+var t = require('../twitter/twitter_connection');
 
 router.get('/', function(req, res, next) {
     res.send('GET tweet');
 });
 
-router.get('/special', function(req, res, next) {
-    res.send('special tweet');
+router.get('/from/:screen_name', function(req, res, next) {
+    t.get('statuses/user_timeline', { screen_name: req.params.screen_name },  function (err, data, response) {
+        if (err) {
+            res.status(err.statusCode).send(err.message);
+        }
+        else {
+            res.status(200).send(data);
+        }
+    });
 });
 
 router.post('/', function(req, res, next) {
-
-    // Error example
-    var error = true;
-    var errorMessage = 'Super error';
-    var errorCode = 501;
-    var result = 'Super result'
-
-    if (error) {
-        res.status(errorCode).send({ 'Error': errorMessage });
-    }
-    else {
-        res.status(200).send({ 'result': result });
-    }
+    t.post('statuses/update', { status: req.body.message }, function(err, data, response) {
+        if (err) {
+            res.status(err.statusCode).send(err.message);
+        }
+        else {
+            res.status(200).send(data);
+        }
+    })
 });
 
 router.put('/', function(req, res, next) {
