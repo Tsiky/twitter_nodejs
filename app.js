@@ -14,6 +14,8 @@ var users = require('./routes/users');
 var tweets = require('./routes/tweets');
 var lists = require('./routes/lists');
 var relationships = require('./routes/relationships');
+var directMessages = require('./routes/directMessages');
+var trends = require('./routes/trends');
 
 var app = express();
 
@@ -36,6 +38,8 @@ app.use('/users', users);
 app.use('/tweets', tweets);
 app.use('/lists', lists);
 app.use('/relationships', relationships);
+app.use('/directMessages', directMessages);
+app.use('/trends', trends);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
