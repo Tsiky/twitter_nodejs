@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var async = require("async");
+var async = require('async');
 var t = require('../../twitter/twitter_connection');
 
 router.delete('/', function(req, res, next) {
