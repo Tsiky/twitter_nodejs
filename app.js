@@ -13,9 +13,15 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var tweets = require('./routes/tweets');
 var lists = require('./routes/lists');
-var relationships = require('./routes/relationships');
 var directMessages = require('./routes/directMessages');
-var trends = require('./routes/trends');
+var trendsFriendships = require('./routes/trends/friendships');
+var suggRelationship = require('./routes/suggestions/relationships');
+var commonFollowers = require('./routes/commonFollowers');
+var lastFollowers = require('./routes/friendships/lastFollowers');
+var addUser = require('./routes/lists/addUser');
+var removeUser = require('./routes/lists/removeUser');
+var mutedList = require('./routes/lists/mutedList');
+var relationships = require('./routes/relationships');
 var deleteAllBlocks = require('./routes/blocks/deleteAll');
 var deleteAllMutes = require('./routes/mutes/deleteAll');
 
@@ -39,11 +45,18 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/tweets', tweets);
 app.use('/lists', lists);
-app.use('/relationships', relationships);
 app.use('/directMessages', directMessages);
-app.use('/trends', trends);
+app.use('/suggestions/relationships', suggRelationship);
+app.use('/commonFollowers', commonFollowers);
+app.use('/friendships/lastFollowers', lastFollowers);
+app.use('/lists/addUser', addUser);
+app.use('/lists/removeUser', removeUser);
+app.use('/lists/mutedList', mutedList);
+app.use('/trends/friendships', trendsFriendships);
+app.use('/relationships', relationships);
 app.use('/blocks', deleteAllBlocks);
 app.use('/mutes', deleteAllMutes);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

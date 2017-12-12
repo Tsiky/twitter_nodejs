@@ -6,8 +6,8 @@ router.get('/', function(req, res, next) {
     res.send('GET tweet');
 });
 
-router.get('/from/:screen_name', function(req, res, next) {
-    t.get('statuses/user_timeline', { screen_name: req.params.screen_name },  function (err, data, response) {
+router.get('/from', function(req, res, next) {
+    t.get('statuses/user_timeline', { screen_name: req.query.screen_name },  function (err, data, response) {
         if (err) {
             res.status(err.statusCode).send(err.message);
         }
