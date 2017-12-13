@@ -4,11 +4,10 @@ var async = require("async");
 var t = require('../../twitter/twitter_connection');
 
 router.delete('/', function (req, res, next) {
-    //TODO get identity from OAuth
-    var id = '937282481740566533';
+    
     var calls = [];
     //Get all the tweets from the authenticated user, not including his retweets
-    t.get('statuses/user_timeline', {user_id: id, include_rts: 'false'}, function (err, data, response) {
+    t.get('direct_messages', function (err, data, response) {
         if (err) {
             res.status(err.statusCode).send(err.message);
         } else {
@@ -16,7 +15,7 @@ router.delete('/', function (req, res, next) {
             //Push all the id of tweets having the query string in their text in queue for deletion
             data.forEach(function (element) {
                 if (element.text.indexOf(strQuery) !== -1)
-                    calls.push(deleteTweet.bind(null, element.id_str));
+                    calls.push(deleteDirectMessages.bind(null, element.id_str));
             });
             //Delete all the matching tweets in parallel
             async.parallel(
@@ -33,8 +32,8 @@ router.delete('/', function (req, res, next) {
 });
 
 
-function deleteTweet(id, callback) {
-    t.post('statuses/destroy', {id: id}, function (err, data, response) {
+function deleteDirectMessages(id, callback) {
+    t.post('direct_messages/destroy', {id: id}, function (err, data, response) {
         if (err) {
             console.log(err);
             callback(err, null);
