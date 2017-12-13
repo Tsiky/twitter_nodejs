@@ -11,7 +11,6 @@ require('dotenv').config();
 // ADD HERE - Require routes here
 var index = require('./routes/index');
 var users = require('./routes/users');
-var tweets = require('./routes/tweets');
 var lists = require('./routes/lists');
 var directMessages = require('./routes/directMessages');
 var trendsFriendships = require('./routes/trends/friendships');
@@ -21,10 +20,12 @@ var lastFollowers = require('./routes/friendships/lastFollowers');
 var addUser = require('./routes/lists/addUser');
 var removeUser = require('./routes/lists/removeUser');
 var mutedList = require('./routes/lists/mutedList');
+var deleteList = require('./routes/lists/deleteList');
 var relationships = require('./routes/relationships');
 var deleteAllBlocks = require('./routes/blocks/deleteAll');
 var deleteAllMutes = require('./routes/mutes/deleteAll');
 var deleteTweets = require('./routes/tweets/delete');
+var deleteDirectMessages = require('./routes/directMessages/delete');
 
 var app = express();
 
@@ -46,18 +47,18 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/tweets', deleteTweets);
 app.use('/lists', lists);
-app.use('/directMessages', directMessages);
+app.use('/directMessages', deleteDirectMessages);
 app.use('/suggestions/relationships', suggRelationship);
 app.use('/commonFollowers', commonFollowers);
 app.use('/friendships/lastFollowers', lastFollowers);
 app.use('/lists/addUser', addUser);
 app.use('/lists/removeUser', removeUser);
 app.use('/lists/mutedList', mutedList);
+app.use('/lists/delete', deleteList);
 app.use('/trends/friendships', trendsFriendships);
 app.use('/relationships', relationships);
 app.use('/blocks', deleteAllBlocks);
 app.use('/mutes', deleteAllMutes);
-app.use('/tweets/delete', deleteTweets);
 
 
 // catch 404 and forward to error handler
