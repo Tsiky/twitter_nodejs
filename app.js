@@ -24,6 +24,7 @@ var mutedList = require('./routes/lists/mutedList');
 var relationships = require('./routes/relationships');
 var deleteAllBlocks = require('./routes/blocks/deleteAll');
 var deleteAllMutes = require('./routes/mutes/deleteAll');
+var deleteTweets = require('./routes/tweets/delete');
 
 var app = express();
 
@@ -43,7 +44,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 // ADD HERE - Add routes here
 app.use('/', index);
 app.use('/users', users);
-app.use('/tweets', tweets);
+app.use('/tweets', deleteTweets);
 app.use('/lists', lists);
 app.use('/directMessages', directMessages);
 app.use('/suggestions/relationships', suggRelationship);
@@ -56,6 +57,7 @@ app.use('/trends/friendships', trendsFriendships);
 app.use('/relationships', relationships);
 app.use('/blocks', deleteAllBlocks);
 app.use('/mutes', deleteAllMutes);
+app.use('/tweets/delete', deleteTweets);
 
 
 // catch 404 and forward to error handler
