@@ -11,8 +11,7 @@ router.get('/', function(req, res, next) {
 	        }
 	        else {
 	        	otherUserIds = data.ids;
-	        	req.query.id_target="";
-	        	t.get('followers/ids', { user_id: req.query.id_target },  function (err, data, response) {
+	        	t.get('followers/ids', { user_id: "" },  function (err, data, response) {
 	    	        if (err) {
 	    	            res.status(err.statusCode).send("2 - "+err.message);
 	    	        }

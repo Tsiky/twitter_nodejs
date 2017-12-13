@@ -1,13 +1,53 @@
 var express = require('express');
 var router = express.Router();
+var async = require('async');
+var t = require('../../twitter/twitter_connection');
 
-router.get('/', function(req, res, next) {	
+router.post('/', function(req, res, next) {	
 	
-	if(req.query.number > -1)
-		res.send('Follow the last '+req.query.number+' followers of the authenticated user');
+	if(req.query.number > -1) {
+
+    	t.get('followers/ids', { user_id: "" },  function (err, data, response) {
+	        if (err) {
+	            res.status(err.statusCode).send(err.message);
+	        }
+	        else {
+	        	var ids = data.ids.slice(0, req.query.number);
+	        	var calls = []; 
+	        	for (var i = 0; i < ids.length; i++) {
+	        		calls.push(followUser.bind(null, ids[i]))
+	        	}
+
+	        	async.parallel(
+	        			calls,
+	        			function (err, results) {
+	        				if (err) {
+	        					res.status(err.statusCode).send(err.message);
+	        				}
+	        				else {
+	        					res.status(200).send(ids);
+	        				}
+	        			});
+
+	        }
+    	});	
+	}
 	else
-		res.send('Follow the last followers of the authenticated user');
+		res.send('The param "number" is required');
 });
 
+
+function followUser(id, callback) {
+	t.post('friendships/create', { user_id: id }, function(err, data, response) {
+        if (err) {
+        	console.log(err);
+            callback(err, null);
+        }
+        else {
+        	console.log(data);
+            callback(null, data);
+        }
+    })
+}
 
 module.exports = router;
