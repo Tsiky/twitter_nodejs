@@ -4,11 +4,10 @@ var async = require("async");
 var t = require('../../twitter/twitter_connection');
 
 router.delete('/', function (req, res, next) {
-    //TODO get identity from OAuth
-    var id = '937282481740566533';
+
     var calls = [];
     //Get all the tweets from the authenticated user, not including his retweets
-    t.get('statuses/user_timeline', {user_id: id, include_rts: 'false'}, function (err, data, response) {
+    t.get('statuses/user_timeline', { include_rts: 'false'}, function (err, data, response) {
         if (err) {
             res.status(err.statusCode).send(err.message);
         } else {
