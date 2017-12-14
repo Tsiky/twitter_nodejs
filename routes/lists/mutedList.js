@@ -5,7 +5,7 @@ var async = require('async');
 
 
 router.post('/', function (req, res, next) {
-    //delete any previous list named "NutedUsers"
+    //delete any previous list named "MutedUsers"
     //get all lists owned by the authenticated user
     t.get('lists/ownerships', function (err, data, response) { 
         if (err) {
@@ -51,7 +51,8 @@ router.post('/', function (req, res, next) {
                                                 res.status(err.statusCode).send(list_slug + " " + owner_id);
                                             }
                                             else {
-                                                res.status(200).send(data);
+                                                a = addLink(data);
+                                                res.status(200).send(a);
                                             }
                                         }); 
                                     } 
@@ -62,7 +63,7 @@ router.post('/', function (req, res, next) {
                 }); 
             }
         });
-    }); 
+}); 
 
 function removeIfSame(list, callback) {
     if (list.name == "MutedUsers") {
@@ -79,6 +80,21 @@ function removeIfSame(list, callback) {
             }
         });
     }
+}
+
+function addLink(data) {
+    return json({ id: data.id_str }, [
+        { rel: "self", method: "GET", href: 'http://localhost:3000/lists?list_id=' + data.id },
+        { rel: "changePrivate", method: "POST", title: 'mode Privare', href: 'http://localhost:3000/lists?list_id=' + data.id +"&mode=private"}
+    ]);
+}
+
+function json(object, links) {
+    // grab the object and avoid updating reference.
+    var jsonObject = JSON.parse(JSON.stringify(object));
+    // either add to existing links collection or add new collection
+    jsonObject.links = (jsonObject.links) ? jsonObject.links.concat(links) : jsonObject.links = links;
+    return jsonObject;
 }
 
 module.exports = router;
