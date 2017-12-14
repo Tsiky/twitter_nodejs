@@ -65,7 +65,7 @@ router.post('/', function (req, res, next) {
     }); 
 
 function removeIfSame(list, callback) {
-    if (list.name === "MutedUsers") {
+    if (list.name == "MutedUsers") {
         list_slug = list.slug;
         list_owner = list.user.id; 
         t.post('lists/destroy', { slug: list_slug, owner_id: list_owner }, function (err, data, response) {
