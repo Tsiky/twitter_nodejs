@@ -7,9 +7,9 @@ var t = require('../../twitter/twitter_connection');
 router.delete('/', function (req, res, next) {
     var calls = [];
     var delCalls = [];
-    var id = '937282481740566533';
+    
     //Get all the lists that the authenticated user owns
-    t.get('lists/ownerships', {user_id: id}, function (err, data, response) {
+    t.get('lists/ownerships',  function (err, data, response) {
         if (err) {
             res.status(err.statusCode).send(err.message);
         } else {
