@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var hateoasLinker = require('express-hateoas-links');
 
 // Only for dev - use environment variables of .env file
 require('dotenv').config();
@@ -39,6 +40,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(hateoasLinker);
 
 // ADD HERE - Add routes here
 app.use('/', index);
