@@ -52,7 +52,7 @@ function getTweet(id, limit, callback) {
 	        		tweetHTs.push(data[i].entities.hashtags[j].text.toLowerCase());
 	        	}
         	}
-        	callback(null, getTopN(tweetHTs,limit));
+        	callback(null, tweetHTs);
         }
     });	
 }
