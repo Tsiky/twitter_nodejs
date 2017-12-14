@@ -12,11 +12,7 @@ require('dotenv').config();
 // ADD HERE - Require routes here
 var index = require('./routes/index');
 var users = require('./routes/users');
-<<<<<<< HEAD
 var lists = require('./routes/lists/delete');
-var directMessages = require('./routes/directMessages');
-=======
->>>>>>> ebe2c1eddd89748b9f4c91cae2a62fb2addda409
 var trendsFriendships = require('./routes/trends/friendships');
 var suggRelationship = require('./routes/suggestions/relationships');
 var commonFollowers = require('./routes/commonFollowers');
@@ -24,7 +20,6 @@ var lastFollowers = require('./routes/friendships/lastFollowers');
 var addUser = require('./routes/lists/addUser');
 var removeUser = require('./routes/lists/removeUser');
 var mutedList = require('./routes/lists/mutedList');
-var deleteLists = require('./routes/lists/delete');
 var relationships = require('./routes/relationships');
 var deleteAllBlocks = require('./routes/blocks/deleteAll');
 var deleteAllMutes = require('./routes/mutes/deleteAll');
@@ -51,7 +46,7 @@ app.use(hateoasLinker);
 app.use('/', index);
 app.use('/users', users);
 app.use('/tweets', deleteTweets);
-app.use('/lists', deleteLists);
+app.use('/lists', lists);
 app.use('/directMessages', deleteDirectMessages);
 app.use('/suggestions/relationships', suggRelationship);
 app.use('/commonFollowers', commonFollowers);
