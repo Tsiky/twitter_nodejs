@@ -4,7 +4,7 @@ var async = require('async');
 var t = require('../../twitter/twitter_connection');
 
 router.delete('/', function(req, res, next) {
-    t.get('mutes/users/ids',  function (err, data, response) {
+    t.setCredentials().get('mutes/users/ids',  function (err, data, response) {
         if (err) {
             res.status(err.statusCode).send(err.message);
         }
@@ -32,7 +32,7 @@ router.delete('/', function(req, res, next) {
 
 // For testing
 router.get('/', function(req, res, next) {
-    t.get('mutes/users/ids',  function (err, data, response) {
+    t.setCredentials(req.headers).get('mutes/users/ids',  function (err, data, response) {
         if (err) {
             res.status(err.statusCode).send(err.message);
         }
