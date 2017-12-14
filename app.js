@@ -11,8 +11,11 @@ require('dotenv').config();
 // ADD HERE - Require routes here
 var index = require('./routes/index');
 var users = require('./routes/users');
+<<<<<<< HEAD
 var lists = require('./routes/lists/delete');
 var directMessages = require('./routes/directMessages');
+=======
+>>>>>>> ebe2c1eddd89748b9f4c91cae2a62fb2addda409
 var trendsFriendships = require('./routes/trends/friendships');
 var suggRelationship = require('./routes/suggestions/relationships');
 var commonFollowers = require('./routes/commonFollowers');
