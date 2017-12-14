@@ -4,30 +4,36 @@ var async = require('async');
 var t = require('../../twitter/twitter_connection');
 
 router.put('/', function (req, res, next) {
-    t.get('lists/ownerships', function (err, data, response) {
-        if (err) {
-            res.status(err.statusCode).send(err.message);
-        }
-        else {
-            var all_lists = data.lists;
-            var calls = []; // Array of calls to function addUser
-            for (var i = 0; i < all_lists.length; i++) {
-                calls.push(addUser.bind(null, all_lists[i], req.query.id))
+    if (req.query.id == null) {
+        message = "Wrong parameters: id needed"
+        res.status(400).send(message);
+    }
+    else {
+        t.get('lists/ownerships', function (err, data, response) {
+            if (err) {
+                res.status(err.statusCode).send(err.message);
             }
+            else {
+                var all_lists = data.lists;
+                var calls = []; // Array of calls to function addUser
+                for (var i = 0; i < all_lists.length; i++) {
+                    calls.push(addUser.bind(null, all_lists[i], req.query.id))
+                }
 
-            // Add to all the blocks in parallel and wait for the response of all the calls
-            async.parallel(
-                calls,
-                function (err, results) {
-                    if (err) {
-                        res.status(err.statusCode).send(err.message);
-                    }
-                    else {
-                        res.send(202);
-                    }
-                });
-        }
-    });
+                // Add to all the lists in parallel and wait for the response of all the calls
+                async.parallel(
+                    calls,
+                    function (err, results) {
+                        if (err) {
+                            res.status(err.statusCode).send(err.message);
+                        }
+                        else {
+                            res.send(202);
+                        }
+                    });
+            }
+        });
+    }
 });
 
 function addUser(list, userid, callback) {

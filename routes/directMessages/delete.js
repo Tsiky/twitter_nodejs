@@ -6,18 +6,18 @@ var t = require('../../twitter/twitter_connection');
 router.delete('/', function (req, res, next) {
     
     var calls = [];
-    //Get all the tweets from the authenticated user, not including his retweets
+    //Get all the received direct messages from the authenticated user
     t.get('direct_messages', function (err, data, response) {
         if (err) {
             res.status(err.statusCode).send(err.message);
         } else {
             var strQuery = req.query.query;
-            //Push all the id of tweets having the query string in their text in queue for deletion
+            //Push all the id of dm having the query string in their text in queue for deletion
             data.forEach(function (element) {
                 if (element.text.indexOf(strQuery) !== -1)
-                    calls.push(deleteDirectMessages.bind(null, element.id_str));
+                    calls.push(deleteDirectMessage.bind(null, element.id_str));
             });
-            //Delete all the matching tweets in parallel
+            //Delete all the matching dm in parallel
             async.parallel(
                     calls,
                     function (err, results) {
@@ -32,7 +32,7 @@ router.delete('/', function (req, res, next) {
 });
 
 
-function deleteDirectMessages(id, callback) {
+function deleteDirectMessage(id, callback) {
     t.post('direct_messages/destroy', {id: id}, function (err, data, response) {
         if (err) {
             console.log(err);
