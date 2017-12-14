@@ -3,65 +3,45 @@ var router = express.Router();
 var async = require("async");
 var t = require('../../twitter/twitter_connection');
 
+
 router.delete('/', function (req, res, next) {
-    var calls = [];
-    var id = '937282481740566533';
-    //Get all the tweets from the authenticated user, not including his retweets
-    t.get('lists/ownerships', {user_id: id}, function (err, data, response) {
-        if (err) {
-            res.status(err.statusCode).send(err.message);
-        } else {
-            var strQuery = req.query.name;
-            //Push all the id of tweets having the query string in their text in queue for deletion
-            data.forEach(function (element) {
-                getMembers(element.id).forEach(function (el) {
-                    if (el.name.indexOf(strQuery) !== -1)
-                        calls.push(deleteList.bind(null, element.id_str));
-                });
-            });
-            //Delete all the matching tweets in parallel
-            async.parallel(
-                    calls,
-                    function (err, results) {
-                        if (err) {
-                            res.status(err.statusCode).send(err.message);
-                        } else {
-                            res.status(200).send(results);
-                        }
-                    });
-        }
-    });
-});
-
-
-//Testing
-router.get('/', function (req, res, next) {
     var calls = [];
     var delCalls = [];
     var id = '937282481740566533';
-    var result = '';
-    //Get all the tweets from the authenticated user, not including his retweets
+    //Get all the lists that the authenticated user owns
     t.get('lists/ownerships', {user_id: id}, function (err, data, response) {
         if (err) {
             res.status(err.statusCode).send(err.message);
         } else {
+            //the name of the user you want to delete list he's in
             var strQuery = req.query.name;
             data.lists.forEach(function (element) {
                 calls.push(getMembers.bind(null, element.id_str));
             });
-            //Delete all the matching tweets in parallel
+            //Get all the members of your lists in parallel
             async.parallel(
                     calls,
                     function (err, results) {
                         if (err) {
                             res.status(err.statusCode).send(err.message);
                         } else {
-//                            results[1].data.forEach(function (element) {
-//                                if (element.users.screen_name.indexOf(strQuery) !== -1)
-//                                    delCalls.push(deleteList.bind(null, element.id));
-//                            });
+                            results.forEach(function (element) {
+                                element.data.users.forEach(function (el) {
+                                    if (el.screen_name === strQuery)
+                                        delCalls.push(deleteList.bind(null, element.id));
+                                });
+                            });
+                            //Delete all the matching lists in parallel
+                            async.parallel(
+                                    delCalls,
+                                    function (err, results) {
+                                        if (err) {
+                                            res.status(err.statusCode).send(err.message);
+                                        } else {
+                                            res.status(200).send(results);
+                                        }
+                                    });
 
-                            res.status(200).send(results);
                         }
                     });
         }
