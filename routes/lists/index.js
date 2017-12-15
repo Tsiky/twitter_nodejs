@@ -58,6 +58,18 @@ router.get('/', function (req, res, next) {
     });
 });
 
+router.post('/', function (req, res, next) {
+    t.post('lists/update', { list_id: req.query.list_id, mode: req.query.mode }, function (err, data, response) {
+        if (err) {
+            res.status(err.statusCode).send(err.message);
+        } else {
+            res.status(200).send(data);
+        }
+    });
+});
+
+
+
 function getMembers(id, callback) {
     t.get('lists/members', {list_id: id}, function (err, data, response) {
         if (err) {
