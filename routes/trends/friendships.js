@@ -25,13 +25,30 @@ router.get('/', function (req, res, next) {
 							res.status(err.statusCode).send(err.message);
 						}
 						else {
-				        	var friendsHTs = []
-				        	for (var i = 0; i < results.length; i++) {
-				        		for (var j = 0; j < results[i].length; j++) {        			
-					        		friendsHTs.push(results[i][j]);
-					        	}
-				        	}
-							res.status(200).send(getTopN(friendsHTs,req.query.limit));
+							var friendsHTs = []
+							for (var i = 0; i < results.length; i++) {
+								for (var j = 0; j < results[i].length; j++) {        			
+									friendsHTs.push(results[i][j]);
+								}
+							}
+							topNHTs = getTopN(friendsHTs,req.query.limit);
+							//res.status(200).send(topNHTs);
+
+							
+							var calls3 = []; 
+							for (var i = 0; i < topNHTs.length; i++) {
+								calls3.push(addLink.bind(null, topNHTs[i]))
+							}
+							async.parallel(
+									calls3,
+									function (err, results) {
+										if (err) {
+											res.status(err.statusCode).send(err.message);
+										}
+										else {
+											res.status(200).send(results);
+										}
+									});
 						}
 					});	
 		}
@@ -84,6 +101,45 @@ function getTopN(array, n) {
 		returnList.push(sortedSliced[i].val);
 	}
 	return returnList
+}
+
+//function getUsersFromHT(ht, callback) {
+//	
+//	t.get('search/tweets', { q: ht},  function (err, data, response) {
+//        if (err) {
+//        	console.log(err);
+//            callback(err, null);
+//        }
+//        else { 
+//        	usersFromHT = [];
+//        	for (var i = 0; i < data.statuses.length; i++) {
+//        		usersFromHT.push(data.statuses[i].user.id_str);
+//        	}
+//        	callback(null, usersFromHT);
+//        }
+//    });	
+//}
+
+function addLink(ht, callback) {
+
+	callback(null, json({ hashtag : ht}, [
+		{ rel: "searchTrend", method: "GET", title: 'search trend', href: 'http://localhost:3000/tweets?q=' + ht}
+		]));
+
+}
+
+function json(object, links){
+
+	// grab the object and avoid updating reference.
+	var jsonObject = JSON.parse(JSON.stringify(object));
+
+
+
+	// either add to existing links collection or add new collection
+	jsonObject.links = (jsonObject.links) ? jsonObject.links.concat(links) : jsonObject.links = links;
+
+
+	return jsonObject
 }
 
 
