@@ -16,6 +16,7 @@ var lists = require('./routes/lists');
 var trendsFriendships = require('./routes/trends/friendships');
 var commonFollowers = require('./routes/commonFollowers');
 var lastFollowers = require('./routes/friendships/lastFollowers');
+var friendships = require('./routes/friendships');
 var addUser = require('./routes/lists/addUser');
 var removeUser = require('./routes/lists/removeUser');
 var mutedList = require('./routes/lists/mutedList');
@@ -24,6 +25,7 @@ var deleteAllBlocks = require('./routes/blocks/deleteAll');
 var deleteAllMutes = require('./routes/mutes/deleteAll');
 var deleteTweets = require('./routes/tweets/delete');
 var deleteDirectMessages = require('./routes/directMessages/delete');
+var tweetUsers = require('./routes/tweets/users');
 
 var app = express();
 
@@ -45,10 +47,12 @@ app.use(hateoasLinker);
 app.use('/', index);
 app.use('/users', users);
 app.use('/tweets', deleteTweets);
+app.use('/tweets/users', tweetUsers);
 app.use('/lists', lists);
 app.use('/directMessages', deleteDirectMessages);
 app.use('/commonFollowers', commonFollowers);
 app.use('/friendships/lastFollowers', lastFollowers);
+app.use('/friendships', friendships);
 app.use('/lists/addUser', addUser);
 app.use('/lists/removeUser', removeUser);
 app.use('/lists/mutedList', mutedList);

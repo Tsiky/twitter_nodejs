@@ -1,13 +1,13 @@
 var express = require('express');
 var router = express.Router();
 var async = require('async');
-var t = require('../twitter/twitter_connection');
+var t = require('../../twitter/twitter_connection');
 
-router.get('/', function(req, res, next) {	
+router.post('/', function(req, res, next) {	
 	
 	if(req.query.id > -1) {
 
-    	t.get('users/show', { user_id: req.query.id },  function (err, data, response) {
+    	t.post('friendships/create', { user_id: req.query.id },  function (err, data, response) {
 	        if (err) {
 	            res.status(err.statusCode).send(err.message);
 	        }

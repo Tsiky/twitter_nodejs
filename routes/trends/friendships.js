@@ -103,27 +103,10 @@ function getTopN(array, n) {
 	return returnList
 }
 
-//function getUsersFromHT(ht, callback) {
-//	
-//	t.get('search/tweets', { q: ht},  function (err, data, response) {
-//        if (err) {
-//        	console.log(err);
-//            callback(err, null);
-//        }
-//        else { 
-//        	usersFromHT = [];
-//        	for (var i = 0; i < data.statuses.length; i++) {
-//        		usersFromHT.push(data.statuses[i].user.id_str);
-//        	}
-//        	callback(null, usersFromHT);
-//        }
-//    });	
-//}
-
 function addLink(ht, callback) {
 
 	callback(null, json({ hashtag : ht}, [
-		{ rel: "searchTrend", method: "GET", title: 'search trend', href: 'http://localhost:3000/tweets?q=' + ht}
+		{ rel: "searchTrend", method: "GET", title: 'search trend', href: 'http://localhost:3000/tweets/users?q=' + ht}
 		]));
 
 }
