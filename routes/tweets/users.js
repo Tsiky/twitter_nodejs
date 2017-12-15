@@ -5,7 +5,7 @@ var t = require('../../twitter/twitter_connection');
 
 
 router.get('/', function(req, res, next) {
-	t.get('search/tweets', { q: req.query.q},  function (err, data, response) {
+	t.setCredentials(req.headers).get('search/tweets', { q: req.query.q},  function (err, data, response) {
 		if (err) {
 			res.status(err.statusCode).send(err.message);
 		}

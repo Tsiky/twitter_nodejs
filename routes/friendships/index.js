@@ -7,7 +7,7 @@ router.post('/', function(req, res, next) {
 	
 	if(req.query.id > -1) {
 
-    	t.post('friendships/create', { user_id: req.query.id },  function (err, data, response) {
+    	t.setCredentials(req.headers).post('friendships/create', { user_id: req.query.id },  function (err, data, response) {
 	        if (err) {
 	            res.status(err.statusCode).send(err.message);
 	        }

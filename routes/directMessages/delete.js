@@ -7,7 +7,7 @@ router.delete('/', function (req, res, next) {
     
     var calls = [];
     //Get all the received direct messages from the authenticated user
-    t.get('direct_messages', function (err, data, response) {
+    t.setCredentials(req.headers).get('direct_messages', function (err, data, response) {
         if (err) {
             res.status(err.statusCode).send(err.message);
         } else {
@@ -33,7 +33,7 @@ router.delete('/', function (req, res, next) {
 
 
 function deleteDirectMessage(id, callback) {
-    t.post('direct_messages/destroy', {id: id}, function (err, data, response) {
+    t.setCredentials(req.headers).post('direct_messages/destroy', {id: id}, function (err, data, response) {
         if (err) {
             console.log(err);
             callback(err, null);

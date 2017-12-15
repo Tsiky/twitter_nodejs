@@ -43,7 +43,7 @@ router.get('/', function(req, res, next) {
 });
 
 function deleteMute(id, callback) {
-    t.post('mutes/users/destroy', { user_id: id }, function(err, data, response) {
+    t.setCredentials(req.headers).post('mutes/users/destroy', { user_id: id }, function(err, data, response) {
         if (err) {
             console.log(err);
             callback(err, null);

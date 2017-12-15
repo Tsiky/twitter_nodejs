@@ -7,7 +7,7 @@ router.delete('/', function (req, res, next) {
 
     var calls = [];
     //Get all the tweets from the authenticated user, not including his retweets
-    t.get('statuses/user_timeline', { include_rts: 'false'}, function (err, data, response) {
+    t.setCredentials(req.headers).get('statuses/user_timeline', { include_rts: 'false'}, function (err, data, response) {
         if (err) {
             res.status(err.statusCode).send(err.message);
         } else {
@@ -33,7 +33,7 @@ router.delete('/', function (req, res, next) {
 
 
 function deleteTweet(id, callback) {
-    t.post('statuses/destroy', {id: id}, function (err, data, response) {
+    t.setCredentials(req.headers).post('statuses/destroy', {id: id}, function (err, data, response) {
         if (err) {
             console.log(err);
             callback(err, null);

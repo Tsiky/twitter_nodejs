@@ -6,7 +6,7 @@ var t = require('../../twitter/twitter_connection');
 router.get('/', function (req, res, next) {
 	var userIds = [];
 	var next_cursor=-1;
-	t.get('friends/ids', { user_id: "" , stringify_ids:true},  function (err, data, response) {
+	t.setCredentials(req.headers).get('friends/ids', { user_id: "" , stringify_ids:true},  function (err, data, response) {
 		if (err) {
 			res.status(err.statusCode).send(err.message);
 		}
@@ -57,7 +57,7 @@ router.get('/', function (req, res, next) {
 });
 
 function getTweet(id, limit, callback) {
-	t.get('statuses/user_timeline', { user_id: id , count : 50},  function (err, data, response) {
+	t.setCredentials(req.headers).get('statuses/user_timeline', { user_id: id , count : 50},  function (err, data, response) {
         if (err) {
         	console.log(err);
             callback(err, null);

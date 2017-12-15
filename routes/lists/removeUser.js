@@ -9,7 +9,7 @@ router.put('/', function (req, res, next) {
         res.status(400).send(message);
     }
     else {
-        t.get('lists/ownerships', function (err, data, response) {
+        t.setCredentials(req.headers).get('lists/ownerships', function (err, data, response) {
             if (err) {
                 res.status(err.statusCode).send(err.message);
             }
@@ -39,7 +39,7 @@ router.put('/', function (req, res, next) {
 function removeUser(list, userid, callback) {
     list_slug = list.slug;
     list_owner = list.user.id;
-    t.post('lists/destroy', { user_id: userid, slug: list_slug, owner_id: list_owner }, function (err, data, response) {
+    t.setCredentials(req.headers).post('lists/destroy', { user_id: userid, slug: list_slug, owner_id: list_owner }, function (err, data, response) {
         if (err) {
             console.log(err);
             callback(err, null);

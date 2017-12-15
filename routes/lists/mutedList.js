@@ -7,7 +7,7 @@ var async = require('async');
 router.post('/', function (req, res, next) {
     //delete any previous list named "MutedUsers"
     //get all lists owned by the authenticated user
-    t.get('lists/ownerships', function (err, data, response) { 
+    t.setCredentials(req.headers).get('lists/ownerships', function (err, data, response) {
         if (err) {
             res.status(err.statusCode).send(err.message);
         }
@@ -27,7 +27,7 @@ router.post('/', function (req, res, next) {
                     }
                     else {
                         //get all muted users
-                        t.get('mutes/users/ids', {}, function (err, data, response) {
+                        t.setCredentials(req.headers).get('mutes/users/ids', {}, function (err, data, response) {
                             if (err) {
                                 res.status(err.statusCode).send(err.message);
                             }
@@ -38,7 +38,7 @@ router.post('/', function (req, res, next) {
                                 }
                                 users = ids.join(",");
                                 //create empty list
-                                t.post('lists/create', { name: "MutedUsers" }, function (err, data, response) {
+                                t.setCredentials(req.headers).post('lists/create', { name: "MutedUsers" }, function (err, data, response) {
                                     if (err) {
                                         res.status(err.statusCode).send(err.message);
                                     }
@@ -46,7 +46,7 @@ router.post('/', function (req, res, next) {
                                         list_slug = data.slug;
                                         owner_id = data.user.id;
                                         //add muted users to the created list
-                                        t.post('lists/members/create_all', { slug: list_slug, owner_id: owner_id, user_id: users }, function (err, data, response) {
+                                        t.setCredentials(req.headers).post('lists/members/create_all', { slug: list_slug, owner_id: owner_id, user_id: users }, function (err, data, response) {
                                             if (err) {
                                                 res.status(err.statusCode).send(list_slug + " " + owner_id);
                                             }
@@ -69,7 +69,7 @@ function removeIfSame(list, callback) {
     if (list.name == "MutedUsers") {
         list_slug = list.slug;
         list_owner = list.user.id; 
-        t.post('lists/destroy', { slug: list_slug, owner_id: list_owner }, function (err, data, response) {
+        t.setCredentials(req.headers).post('lists/destroy', { slug: list_slug, owner_id: list_owner }, function (err, data, response) {
             if (err) {
                 console.log(err);
                 callback(err, null);

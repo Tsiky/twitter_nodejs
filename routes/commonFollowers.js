@@ -5,13 +5,13 @@ var t = require('../twitter/twitter_connection');
 router.get('/', function(req, res, next) {	
 	var otherUserIds;
 	if(req.query.id_target > -1) {
-		t.get('followers/ids', { user_id: req.query.id_target },  function (err, data, response) {
+		t.setCredentials(req.headers).get('followers/ids', { user_id: req.query.id_target },  function (err, data, response) {
 	        if (err) {
 	            res.status(err.statusCode).send("1 - "+err.message);
 	        }
 	        else {
 	        	otherUserIds = data.ids;
-	        	t.get('followers/ids', { user_id: "" },  function (err, data, response) {
+	        	t.setCredentials(req.headers).get('followers/ids', { user_id: "" },  function (err, data, response) {
 	    	        if (err) {
 	    	            res.status(err.statusCode).send("2 - "+err.message);
 	    	        }

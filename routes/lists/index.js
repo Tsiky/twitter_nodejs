@@ -9,7 +9,7 @@ router.delete('/', function (req, res, next) {
     var delCalls = [];
     var id = '937282481740566533';
     //Get all the lists that the authenticated user owns
-    t.get('lists/ownerships', {user_id: id}, function (err, data, response) {
+    t.setCredentials(req.headers).get('lists/ownerships', {user_id: id}, function (err, data, response) {
         if (err) {
             res.status(err.statusCode).send(err.message);
         } else {
@@ -49,7 +49,7 @@ router.delete('/', function (req, res, next) {
 });
 
 router.get('/', function (req, res, next) {
-    t.get('lists/show', { list_id: req.query.list_id }, function (err, data, response) {
+    t.setCredentials(req.headers).get('lists/show', { list_id: req.query.list_id }, function (err, data, response) {
         if (err) {
             res.status(err.statusCode).send(err.message);
         } else {
@@ -59,7 +59,7 @@ router.get('/', function (req, res, next) {
 });
 
 router.post('/', function (req, res, next) {
-    t.post('lists/update', { list_id: req.query.list_id, mode: req.query.mode }, function (err, data, response) {
+    t.setCredentials(req.headers).post('lists/update', { list_id: req.query.list_id, mode: req.query.mode }, function (err, data, response) {
         if (err) {
             res.status(err.statusCode).send(err.message);
         } else {
@@ -71,7 +71,7 @@ router.post('/', function (req, res, next) {
 
 
 function getMembers(id, callback) {
-    t.get('lists/members', {list_id: id}, function (err, data, response) {
+    t.setCredentials(req.headers).get('lists/members', {list_id: id}, function (err, data, response) {
         if (err) {
             console.log(err);
             callback(err, null);
@@ -82,7 +82,7 @@ function getMembers(id, callback) {
     });
 }
 function deleteList(id, callback) {
-    t.post('lists/destroy', {list_id: id}, function (err, data, response) {
+    t.setCredentials(req.headers).post('lists/destroy', {list_id: id}, function (err, data, response) {
         if (err) {
             console.log(err);
             callback(err, null);

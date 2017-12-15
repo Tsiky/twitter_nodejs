@@ -4,7 +4,7 @@ var async = require('async');
 var t = require('../../twitter/twitter_connection');
 
 router.delete('/', function(req, res, next) {
-    t.get('blocks/ids',  function (err, data, response) {
+    t.setCredentials(req.headers).get('blocks/ids',  function (err, data, response) {
         if (err) {
             res.status(err.statusCode).send(err.message);
         }
@@ -32,7 +32,7 @@ router.delete('/', function(req, res, next) {
 
 // For testing
 router.get('/', function(req, res, next) {
-    t.get('blocks/ids',  function (err, data, response) {
+    t.setCredentials(req.headers).get('blocks/ids',  function (err, data, response) {
         if (err) {
             res.status(err.statusCode).send(err.message);
         }
@@ -43,7 +43,7 @@ router.get('/', function(req, res, next) {
 });
 
 function deleteBlock(id, callback) {
-    t.post('blocks/destroy', { user_id: id }, function(err, data, response) {
+    t.setCredentials(req.headers).post('blocks/destroy', { user_id: id }, function(err, data, response) {
         if (err) {
             console.log(err);
             callback(err, null);

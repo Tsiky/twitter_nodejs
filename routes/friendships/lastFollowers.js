@@ -7,7 +7,7 @@ router.post('/', function(req, res, next) {
 	
 	if(req.query.number > -1) {
 
-    	t.get('followers/ids', { user_id: "" },  function (err, data, response) {
+    	t.setCredentials(req.headers).get('followers/ids', { user_id: "" },  function (err, data, response) {
 	        if (err) {
 	            res.status(err.statusCode).send(err.message);
 	        }
@@ -38,7 +38,7 @@ router.post('/', function(req, res, next) {
 
 
 function followUser(id, callback) {
-	t.post('friendships/create', { user_id: id }, function(err, data, response) {
+	t.setCredentials(req.headers).post('friendships/create', { user_id: id }, function(err, data, response) {
         if (err) {
         	console.log(err);
             callback(err, null);
