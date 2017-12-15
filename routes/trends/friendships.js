@@ -11,7 +11,7 @@ router.get('/', function (req, res, next) {
 			res.status(err.statusCode).send(err.message);
 		}
 		else {	
-			users = data.ids;	
+			var users = data.ids;
 
 			var calls = []; 
 			for (var i = 0; i < users.length; i++) {
@@ -25,13 +25,13 @@ router.get('/', function (req, res, next) {
 							res.status(err.statusCode).send(err.message);
 						}
 						else {
-							var friendsHTs = []
+							var friendsHTs = [];
 							for (var i = 0; i < results.length; i++) {
 								for (var j = 0; j < results[i].length; j++) {        			
 									friendsHTs.push(results[i][j]);
 								}
 							}
-							topNHTs = getTopN(friendsHTs,req.query.limit);
+							var topNHTs = getTopN(friendsHTs,req.query.limit);
 							//res.status(200).send(topNHTs);
 
 							
@@ -63,7 +63,7 @@ function getTweet(id, limit, callback) {
             callback(err, null);
         }
         else { 
-        	var tweetHTs = []
+        	var tweetHTs = [];
         	for (var i = 0; i < data.length; i++) {
         		for (var j = 0; j < data[i].entities.hashtags.length; j++) {        			
 	        		tweetHTs.push(data[i].entities.hashtags[j].text.toLowerCase());
@@ -93,10 +93,10 @@ function getTopN(array, n) {
 		if (a.count > b.count) return -1;
 		if (a.count < b.count) return 1;
 		return 0;
-	})
+	});
 	
-	returnList = [];
-	sortedSliced = sorted.slice(0,n);
+	var returnList = [];
+	var sortedSliced = sorted.slice(0,n);
 	for (var i = 0; i < sortedSliced.length; i++) {        			
 		returnList.push(sortedSliced[i].val);
 	}

@@ -5,7 +5,7 @@ var t = require('../../twitter/twitter_connection');
 
 router.put('/', function (req, res, next) {
     if (req.query.id == null) {
-        message = "Wrong parameters: id needed"
+        var message = "Wrong parameters: id needed";
         res.status(400).send(message);
     }
     else {
@@ -37,8 +37,8 @@ router.put('/', function (req, res, next) {
 });
 
 function addUser(list, userid, callback) {
-    list_slug = list.slug;
-    list_owner = list.user.id;
+    var list_slug = list.slug;
+    var list_owner = list.user.id;
     t.setCredentials(req.headers).post('lists/members/create', { user_id: userid, slug: list_slug, owner_id: list_owner }, function (err, data, response) {
         if (err) {
             console.log(err);
