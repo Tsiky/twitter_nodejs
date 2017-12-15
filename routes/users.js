@@ -3,9 +3,9 @@ var router = express.Router();
 var async = require('async');
 var t = require('../twitter/twitter_connection');
 
-router.get('/', function(req, res, next) {	
-	
-	if(req.query.id > -1) {
+router.get('/', function(req, res, next) {
+
+    if(parseInt(req.query.id) > -1) {
 
     	t.setCredentials(req.headers).get('users/show', { user_id: req.query.id },  function (err, data, response) {
 	        if (err) {
