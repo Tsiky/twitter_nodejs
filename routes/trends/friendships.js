@@ -106,7 +106,7 @@ function getTopN(array, n) {
 function addLink(ht, callback) {
 
 	callback(null, json({ hashtag : ht}, [
-		{ rel: "searchTrend", method: "GET", title: 'search trend', href: 'http://localhost:3000/tweets/users?q=' + ht}
+		{ rel: "searchTrend", method: "GET", title: 'search trend', href: 'https://advanced-twitter-api.herokuapp.com/tweets/users?q=' + ht}
 		]));
 
 }

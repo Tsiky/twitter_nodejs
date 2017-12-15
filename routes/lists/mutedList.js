@@ -84,8 +84,8 @@ function removeIfSame(list, callback) {
 
 function addLink(data) {
     return json({ id: data.id_str }, [
-        { rel: "self", method: "GET", href: 'http://localhost:3000/lists?list_id=' + data.id },
-        { rel: "changePrivate", method: "POST", title: 'mode Privare', href: 'http://localhost:3000/lists?list_id=' + data.id +"&mode=private"}
+        { rel: "self", method: "GET", href: 'https://advanced-twitter-api.herokuapp.com/lists?list_id=' + data.id },
+        { rel: "changePrivate", method: "POST", title: 'mode Privare', href: 'https://advanced-twitter-api.herokuapp.com/lists?list_id=' + data.id +"&mode=private"}
     ]);
 }
 

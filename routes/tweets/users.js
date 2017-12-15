@@ -37,8 +37,8 @@ router.get('/', function(req, res, next) {
 function addLinks(id, callback) {
 
 	callback(null, json({ id: id }, [
-		{ rel: "self", method: "GET", href: 'http://localhost:3000/users?id='+id },
-		{ rel: "follow", method: "POST", title: 'Follow user', href: 'http://localhost:3000/friendships?id=' + id }
+		{ rel: "self", method: "GET", href: 'https://advanced-twitter-api.herokuapp.com/users?id='+id },
+		{ rel: "follow", method: "POST", title: 'Follow user', href: 'https://advanced-twitter-api.herokuapp.com/friendships?id=' + id }
 		]));
 
 }
