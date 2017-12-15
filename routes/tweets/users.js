@@ -10,7 +10,7 @@ router.get('/', function(req, res, next) {
 			res.status(err.statusCode).send(err.message);
 		}
 		else { 
-			usersFromHT = [];
+			var usersFromHT = [];
         	for (var i = 0; i < data.statuses.length; i++) {
         		usersFromHT.push(data.statuses[i].user.id_str);
         	}

@@ -1,32 +1,22 @@
-# twitter_nodejs
+# Advanced API for Twitter
 
-## Build Setup
+## For users
+``` bash
+# URL
+https://advanced-twitter-api.herokuapp.com/
+
+# Documentation
+https://app.swaggerhub.com/apis/webServices/Common_twitter/4.0
+```
+
+## For developers
 
 ``` bash
 # install dependencies
 npm install
 
-# run at localhost:3000
+# run at localhost:5000
 npm start
-
-# Example
-GET http://localhost:3000/tweets/
-GET http://localhost:3000/tweets/from/cfarre
-POST http://localhost:3000/tweets/
-with body
-{
-    "message": "Super tweet"
-}
-```
-
-## Add routes
-
-``` bash
-# Add new routes
-.js files in /routes/
-
-# Include new routes
-add a line following the previous examples in app.js under the two 'ADD HERE' comment
 ```
 
 ## Additional info

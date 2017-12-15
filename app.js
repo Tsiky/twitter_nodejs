@@ -9,7 +9,7 @@ var hateoasLinker = require('express-hateoas-links');
 // Only for dev - use environment variables of .env file
 require('dotenv').config();
 
-// ADD HERE - Require routes here
+// Require routes
 var index = require('./routes/index');
 var users = require('./routes/users');
 var lists = require('./routes/lists');
@@ -43,7 +43,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(hateoasLinker);
 
-// ADD HERE - Add routes here
+// Add routes
 app.use('/', index);
 app.use('/users', users);
 app.use('/tweets', deleteTweets);
