@@ -17,7 +17,7 @@ router.put('/', function (req, res, next) {
                 var all_lists = data.lists;
                 var calls = []; // Array of calls to function addUser
                 for (var i = 0; i < all_lists.length; i++) {
-                    calls.push(removeUser.bind(null, all_lists[i], req.query.id))
+                    calls.push(removeUser.bind(null, req.headers, all_lists[i], req.query.id))
                 }
 
                 // Delete from all the lists in parallel and wait for the response of all the calls
@@ -36,10 +36,10 @@ router.put('/', function (req, res, next) {
     }
 });
 
-function removeUser(list, userid, callback) {
+function removeUser(headers, list, userid, callback) {
     var list_slug = list.slug;
     var list_owner = list.user.id;
-    t.setCredentials(req.headers).post('lists/destroy', { user_id: userid, slug: list_slug, owner_id: list_owner }, function (err, data, response) {
+    t.setCredentials(headers).post('lists/destroy', { user_id: userid, slug: list_slug, owner_id: list_owner }, function (err, data, response) {
         if (err) {
             console.log(err);
             callback(err, null);

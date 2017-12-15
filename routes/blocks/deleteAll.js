@@ -12,7 +12,7 @@ router.delete('/', function(req, res, next) {
             var blockedIds = data.ids;
             var calls = []; // Array of calls to function deleteBlock
             for (var i = 0; i < blockedIds.length; i++) {
-                calls.push(deleteBlock.bind(null, blockedIds[i]))
+                calls.push(deleteBlock.bind(null, req.headers, blockedIds[i]))
             }
 
             // Delete all the blocks in parallel and wait for the response of all the calls
@@ -42,8 +42,8 @@ router.get('/', function(req, res, next) {
     });
 });
 
-function deleteBlock(id, callback) {
-    t.setCredentials(req.headers).post('blocks/destroy', { user_id: id }, function(err, data, response) {
+function deleteBlock(headers, id, callback) {
+    t.setCredentials(headers).post('blocks/destroy', { user_id: id }, function(err, data, response) {
         if (err) {
             console.log(err);
             callback(err, null);

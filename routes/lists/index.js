@@ -16,7 +16,7 @@ router.delete('/', function (req, res, next) {
             //the name of the user you want to delete list he's in
             var strQuery = req.query.name;
             data.lists.forEach(function (element) {
-                calls.push(getMembers.bind(null, element.id_str));
+                calls.push(getMembers.bind(null, req.headers, element.id_str));
             });
             //Get all the members of your lists in parallel
             async.parallel(
@@ -28,7 +28,7 @@ router.delete('/', function (req, res, next) {
                             results.forEach(function (element) {
                                 element.data.users.forEach(function (el) {
                                     if (el.screen_name === strQuery)
-                                        delCalls.push(deleteList.bind(null, element.id));
+                                        delCalls.push(deleteList.bind(null, req.headers, element.id));
                                 });
                             });
                             //Delete all the matching lists in parallel
@@ -70,8 +70,8 @@ router.post('/', function (req, res, next) {
 
 
 
-function getMembers(id, callback) {
-    t.setCredentials(req.headers).get('lists/members', {list_id: id}, function (err, data, response) {
+function getMembers(headers, id, callback) {
+    t.setCredentials(headers).get('lists/members', {list_id: id}, function (err, data, response) {
         if (err) {
             console.log(err);
             callback(err, null);
@@ -81,8 +81,8 @@ function getMembers(id, callback) {
         }
     });
 }
-function deleteList(id, callback) {
-    t.setCredentials(req.headers).post('lists/destroy', {list_id: id}, function (err, data, response) {
+function deleteList(headers, id, callback) {
+    t.setCredentials(headers).post('lists/destroy', {list_id: id}, function (err, data, response) {
         if (err) {
             console.log(err);
             callback(err, null);

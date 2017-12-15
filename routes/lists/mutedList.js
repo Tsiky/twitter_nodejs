@@ -15,7 +15,7 @@ router.post('/', function (req, res, next) {
             var all_lists = data.lists;
             var calls = []; // Array of calls to function removeIfSame
             for (var i = 0; i < all_lists.length; i++) {
-                calls.push(removeIfSame.bind(null, all_lists[i]))
+                calls.push(removeIfSame.bind(null, req.headers, all_lists[i]))
             }
  
             // Check all lists in parallel removing the once called "mutedUsers" and wait for the response of all the calls
@@ -65,11 +65,11 @@ router.post('/', function (req, res, next) {
         });
 }); 
 
-function removeIfSame(list, callback) {
+function removeIfSame(headers, list, callback) {
     if (list.name == "MutedUsers") {
         list_slug = list.slug;
         list_owner = list.user.id; 
-        t.setCredentials(req.headers).post('lists/destroy', { slug: list_slug, owner_id: list_owner }, function (err, data, response) {
+        t.setCredentials(headers).post('lists/destroy', { slug: list_slug, owner_id: list_owner }, function (err, data, response) {
             if (err) {
                 console.log(err);
                 callback(err, null);

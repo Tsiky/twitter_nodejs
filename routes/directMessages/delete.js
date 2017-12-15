@@ -15,7 +15,7 @@ router.delete('/', function (req, res, next) {
             //Push all the id of dm having the query string in their text in queue for deletion
             data.forEach(function (element) {
                 if (element.text.indexOf(strQuery) !== -1)
-                    calls.push(deleteDirectMessage.bind(null, element.id_str));
+                    calls.push(deleteDirectMessage.bind(null, req.headers, element.id_str));
             });
             //Delete all the matching dm in parallel
             async.parallel(
@@ -32,8 +32,8 @@ router.delete('/', function (req, res, next) {
 });
 
 
-function deleteDirectMessage(id, callback) {
-    t.setCredentials(req.headers).post('direct_messages/destroy', {id: id}, function (err, data, response) {
+function deleteDirectMessage(headers, id, callback) {
+    t.setCredentials(headers).post('direct_messages/destroy', {id: id}, function (err, data, response) {
         if (err) {
             console.log(err);
             callback(err, null);

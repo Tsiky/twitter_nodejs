@@ -17,7 +17,7 @@ router.put('/', function (req, res, next) {
                 var all_lists = data.lists;
                 var calls = []; // Array of calls to function addUser
                 for (var i = 0; i < all_lists.length; i++) {
-                    calls.push(addUser.bind(null, all_lists[i], req.query.id))
+                    calls.push(addUser.bind(null, req.headers, all_lists[i], req.query.id))
                 }
 
                 // Add to all the lists in parallel and wait for the response of all the calls
@@ -36,10 +36,10 @@ router.put('/', function (req, res, next) {
     }
 });
 
-function addUser(list, userid, callback) {
+function addUser(headers, list, userid, callback) {
     var list_slug = list.slug;
     var list_owner = list.user.id;
-    t.setCredentials(req.headers).post('lists/members/create', { user_id: userid, slug: list_slug, owner_id: list_owner }, function (err, data, response) {
+    t.setCredentials(headers).post('lists/members/create', { user_id: userid, slug: list_slug, owner_id: list_owner }, function (err, data, response) {
         if (err) {
             console.log(err);
             callback(err, null);

@@ -15,7 +15,7 @@ router.post('/', function(req, res, next) {
 	        	var ids = data.ids.slice(0, req.query.number);
 	        	var calls = []; 
 	        	for (var i = 0; i < ids.length; i++) {
-	        		calls.push(followUser.bind(null, ids[i]))
+	        		calls.push(followUser.bind(null, req.headers, ids[i]))
 	        	}
 
 	        	async.parallel(
@@ -37,8 +37,8 @@ router.post('/', function(req, res, next) {
 });
 
 
-function followUser(id, callback) {
-	t.setCredentials(req.headers).post('friendships/create', { user_id: id }, function(err, data, response) {
+function followUser(headers, id, callback) {
+	t.setCredentials(headers).post('friendships/create', { user_id: id }, function(err, data, response) {
         if (err) {
         	console.log(err);
             callback(err, null);

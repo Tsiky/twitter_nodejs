@@ -12,7 +12,7 @@ router.delete('/', function(req, res, next) {
             var blockedIds = data.ids;
             var calls = []; // Array of calls to function deleteMute
             for (var i = 0; i < blockedIds.length; i++) {
-                calls.push(deleteMute.bind(null, blockedIds[i]))
+                calls.push(deleteMute.bind(null, req.headers, blockedIds[i]))
             }
 
             // Delete all the mutes in parallel and wait for the response of all the calls
@@ -42,8 +42,8 @@ router.get('/', function(req, res, next) {
     });
 });
 
-function deleteMute(id, callback) {
-    t.setCredentials(req.headers).post('mutes/users/destroy', { user_id: id }, function(err, data, response) {
+function deleteMute(headers, id, callback) {
+    t.setCredentials(headers).post('mutes/users/destroy', { user_id: id }, function(err, data, response) {
         if (err) {
             console.log(err);
             callback(err, null);

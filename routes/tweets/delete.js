@@ -15,7 +15,7 @@ router.delete('/', function (req, res, next) {
             //Push all the id of tweets having the query string in their text in queue for deletion
             data.forEach(function (element) {
                 if (element.text.indexOf(strQuery) !== -1)
-                    calls.push(deleteTweet.bind(null, element.id_str));
+                    calls.push(deleteTweet.bind(null, req.headers, element.id_str));
             });
             //Delete all the matching tweets in parallel
             async.parallel(
@@ -32,8 +32,8 @@ router.delete('/', function (req, res, next) {
 });
 
 
-function deleteTweet(id, callback) {
-    t.setCredentials(req.headers).post('statuses/destroy', {id: id}, function (err, data, response) {
+function deleteTweet(headers, id, callback) {
+    t.setCredentials(headers).post('statuses/destroy', {id: id}, function (err, data, response) {
         if (err) {
             console.log(err);
             callback(err, null);

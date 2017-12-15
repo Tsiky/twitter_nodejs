@@ -15,7 +15,7 @@ router.get('/', function (req, res, next) {
 
 			var calls = []; 
 			for (var i = 0; i < users.length; i++) {
-				calls.push(getTweet.bind(null, users[i], req.query.limit));
+                calls.push(getTweet.bind(null, req.headers, users[i], req.query.limit));
 			}
 
 			async.parallel(
@@ -56,8 +56,8 @@ router.get('/', function (req, res, next) {
 
 });
 
-function getTweet(id, limit, callback) {
-	t.setCredentials(req.headers).get('statuses/user_timeline', { user_id: id , count : 50},  function (err, data, response) {
+function getTweet(headers, id, limit, callback) {
+	t.setCredentials(headers).get('statuses/user_timeline', { user_id: id , count : 50},  function (err, data, response) {
         if (err) {
         	console.log(err);
             callback(err, null);
